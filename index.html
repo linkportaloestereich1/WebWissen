@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>WebWissen – Digitale Bildung für Schulen</title>
+<style>
+  body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    background: #eef2f7;
+    color: #333;
+    position: relative;
+    min-height: 100vh;
+    padding-bottom: 40px; /* für Footer */
+  }
+  header {
+    background: #005ea1;
+    color: white;
+    padding: 20px;
+    text-align: center;
+    font-size: 1.8rem;
+    font-weight: 700;
+  }
+  .tabs {
+    display: flex;
+    justify-content: center;
+    background: #0078d7;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.15);
+  }
+  .tab {
+    flex: 1;
+    text-align: center;
+    padding: 15px 0;
+    cursor: pointer;
+    color: white;
+    font-weight: 600;
+    border-bottom: 3px solid transparent;
+    transition: background 0.3s, border-bottom 0.3s;
+  }
+  .tab:hover {
+    background: #005ea1;
+  }
+  .tab.active {
+    border-bottom: 3px solid #ffdd40;
+    background: #004080;
+  }
+  main {
+    max-width: 800px;
+    background: white;
+    margin: 30px auto;
+    border-radius: 10px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+    padding: 30px;
+    min-height: 400px;
+  }
+  .content img {
+    max-width: 100%;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  }
+  .content p {
+    font-size: 1.1rem;
+    line-height: 1.5;
+    margin-bottom: 25px;
+  }
+  .downloads {
+    margin-top: 20px;
+  }
+  .downloads h3 {
+    margin-bottom: 10px;
+    color: #005ea1;
+  }
+  .downloads a {
+    display: inline-block;
+    margin-right: 15px;
+    margin-bottom: 10px;
+    background: #0078d7;
+    color: white;
+    padding: 10px 18px;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: background 0.3s;
+  }
+  .downloads a:hover {
+    background: #004080;
+  }
+
+  /* Tipptrainer */
+  .typing-container {
+    text-align: left;
+  }
+  .typing-text {
+    background: #f0f4fa;
+    padding: 15px;
+    border-radius: 8px;
+    font-family: monospace, monospace;
+    font-size: 1.1rem;
+    white-space: pre-wrap;
+    margin-bottom: 15px;
+    user-select: none;
+    border: 1px solid #ccc;
+    min-height: 80px;
+  }
+  .typing-input {
+    width: 100%;
+    font-family: monospace, monospace;
+    font-size: 1.1rem;
+    padding: 12px;
+    border-radius: 8px;
+    border: 2px solid #0078d7;
+    box-sizing: border-box;
+    resize: vertical;
+    min-height: 100px;
+  }
+  .score {
+    margin-top: 15px;
+    font-weight: 700;
+    font-size: 1.2rem;
+    color: #0078d7;
+  }
+  .lesson-select {
+    margin-bottom: 20px;
+  }
+  .lesson-select label {
+    font-weight: 600;
+    margin-right: 10px;
+  }
+  select {
+    font-size: 1rem;
+    padding: 6px 10px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+  }
+  .timer {
+    margin-top: 10px;
+    font-weight: 700;
+    font-size: 1.1rem;
+    color: #d9534f;
+  }
+
+  /* Footer */
+  footer {
+    position: fixed;
+    bottom: 5px;
+    right: 15px;
+    font-size: 0.9rem;
+    color: #666;
+    font-style: italic;
+    user-select: none;
+  }
+</style>
+</head>
+<body>
+
+<header>WebWissen – Digitale Bildung für Schulen</header>
+
+<div class="tabs">
+  <div class="tab active" data-tab="computer">Computer Grundlagen</div>
+  <div class="tab" data-tab="programmieren">Programmieren</div>
+  <div class="tab" data-tab="internet">Internet & Sicherheit</div>
+  <div class="tab" data-tab="medienkompetenz">Medienkompetenz</div>
+  <div class="tab" data-tab="typing">10-Fingersystem</div>
+</div>
+
+<main>
+  <div class="content" id="content">
+    <!-- Inhalt wird hier geladen -->
+  </div>
+</main>
+
+<footer>
+  Produktion von Janik Huber und des WebWissen Teams
+</footer>
+
+<script>
+  const tabs = document.querySelectorAll('.tab');
+  const content = document.getElementById('content');
+
+  const tabContents = {
+    computer: `
+      <img src="https://cdn.pixabay.com/photo/2017/03/01/19/22/keyboard-2108960_1280.jpg" alt="Computer Grundlagen" />
+      <p>Hier lernst du die Grundlagen rund um Computer, Betriebssysteme und wichtige Programme, die du in der Schule brauchst.</p>
+      <div class="downloads">
+        <h3>Downloads für Computer Grundlagen:</h3>
+        <a href="https://www.libreoffice.org/download/download/" target="_blank" rel="noopener">LibreOffice (Office Suite)</a>
+        <a href="https://www.videolan.org/vlc/" target="_blank" rel="noopener">VLC Media Player</a>
+        <a href="https://filezilla-project.org/download.php" target="_blank" rel="noopener">FileZilla (FTP Client)</a>
+      </div>
+    `,
+    programmieren: `
+      <img src="https://cdn.pixabay.com/photo/2017/01/06/19/15/programming-1953127_1280.jpg" alt="Programmieren" />
+      <p>
+        Programmieren macht Spaß! Entdecke beliebte Programmier-Apps,
+        Programme und Websites für Schule und Einstieg.
+      </p>
+
+      <div class="downloads">
+        <h3>Downloads für Programmieren:</h3>
+
+        <a href="https://scratch.mit.edu/" target="_blank" rel="noopener">Scratch (Website)</a>
+
+        <a href="https://scratch.mit.edu/download" target="_blank" rel="noopener">Scratch (App)</a>
+
+        <a href="https://education.lego.com/en-us/downloads/spike-app/software" target="_blank" rel="noopener">LEGO SPIKE App</a>
+
+        <a href="https://www.python.org/downloads/" target="_blank" rel="noopener">Python</a>
+
+        <a href="https://code.visualstudio.com/" target="_blank" rel="noopener">Visual Studio Code</a>
+
+        <a href="https://www.sololearn.com/" target="_blank" rel="noopener">SoloLearn (App & Website)</a>
+
+        <a href="https://grasshopper.app/" target="_blank" rel="noopener">Grasshopper</a>
+
+        <a href="https://replit.com/" target="_blank" rel="noopener">Replit (Online)</a>
+
+        <a href="https://www.w3schools.com/" target="_blank" rel="noopener">W3Schools</a>
+
+        <a href="https://code.org/" target="_blank" rel="noopener">Code.org</a>
+      </div>
+    `,
+    internet: `
+      <img src="https://cdn.pixabay.com/photo/2015/05/07/11/02/web-756437_1280.jpg" alt="Internet & Sicherheit" />
+      <p>Sicher im Internet unterwegs: Datenschutz, Passwörter und Schutz vor Cybermobbing.</p>
+      <div class="downloads">
+        <h3>Downloads für Internet & Sicherheit:</h3>
+        <a href="https://www.mozilla.org/de/firefox/new/" target="_blank" rel="noopener">Firefox Browser</a>
+        <a href="https://www.lastpass.com/de/" target="_blank" rel="noopener">LastPass (Passwort Manager)</a>
+        <a href="https://www.avast.com/de-de/index" target="_blank" rel="noopener">Avast Antivirus</a>
+      </div>
+      <div class="downloads" style="margin-top: 25px;">
+        <h3>Wichtige Websites zur digitalen Sicherheit:</h3>
+        <a href="https://www.bsi.bund.de/DE/Themen/BSI-fuer-Buerger/BSI-fuer-Buerger_node.html" target="_blank" rel="noopener">BSI - Bundesamt für Sicherheit in der Informationstechnik</a>
+        <a href="https://www.datenschutz.org/" target="_blank" rel="noopener">Stiftung Datenschutz</a>
+        <a href="https://www.sicherheit-im-internet.de/" target="_blank" rel="noopener">Deutschland sicher im Netz</a>
+        <a href="https://www.saferinternet.org.uk/" target="_blank" rel="noopener">Safer Internet (Europa)</a>
+        <a href="https://www.nomoreransom.org/" target="_blank" rel="noopener">No More Ransom (Ransomware Hilfe)</a>
+      </div>
+    `,
+    medienkompetenz: `
+      <img src="https://cdn.pixabay.com/photo/2016/11/19/17/54/smartphone-1837346_1280.jpg" alt="Medienkompetenz" />
+      <p>Lerne, Medien bewusst und verantwortungsvoll zu nutzen, Fake News zu erkennen und deine digitale Identität zu schützen.</p>
+      <div class="downloads">
+        <h3>Wichtige Websites und Angebote zur Medienkompetenz:</h3>
+        <a href="https://www.commonsense.org/education/digital-citizenship" target="_blank" rel="noopener">Common Sense Education</a>
+        <a href="https://www.klicksafe.de/" target="_blank" rel="noopener">Klicksafe</a>
+        <a href="https://www.medienkompetenzportal.de/" target="_blank" rel="noopener">Medienkompetenzportal</a>
+        <a href="https://www.schauhin.de/" target="_blank" rel="noopener">Schau hin! – Medienerziehung</a>
+      </div>
+    `
+  };
+
+  // Tipptrainer Lektionen (10 Texte mit steigendem Schwierigkeitsgrad)
+  const typingLessons = [
+    "Der schnelle braune Fuchs springt über den faulen Hund.",
+    "Übe fleißig das 10-Fingersystem, um schneller zu tippen.",
+    "Die Tastatur hilft dir, effizient und fehlerfrei zu schreiben.",
+    "Mit Geduld und Übung wirst du zum Tippprofi am Computer.",
+    "Wiederhole die Übungen täglich, um deine Fähigkeiten zu verbessern.",
+    "Konzentriere dich auf Genauigkeit, nicht nur auf Schnelligkeit.",
+    "Die richtige Haltung der Finger ist entscheidend für Erfolg.",
+    "Tippe die Buchstaben ohne hinzusehen und gewöhne dich daran.",
+    "Je mehr du übst, desto flüssiger und schneller wirst du schreiben.",
+    "Am Ende wirst du das 10-Fingersystem perfekt beherrschen!"
+  ];
+
+  let timerInterval;
+
+  function showContent(tabName) {
+    clearInterval(timerInterval);
+    if (tabName === 'typing') {
+      showTypingTrainer();
+    } else {
+      content.innerHTML = tabContents[tabName];
+    }
+  }
+
+  tabs.forEach(tab => {
+    tab.addEventListener('click', () => {
+      tabs.forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      showContent(tab.dataset.tab);
+    });
+  });
+
+  // Initial Content laden
+  showContent('computer');
+
+  function showTypingTrainer() {
+    content.innerHTML = `
+      <div class="typing-container">
+        <h2>10-Fingersystem Tipptrainer</h2>
+        <p>Wähle eine Lektion aus und tippe den Text so genau wie möglich nach. Fehler kosten Punkte! Zeitlimit: 1 Minute</p>
+        <div class="lesson-select">
+          <label for="lessonSelect">Lektion wählen:</label>
+          <select id="lessonSelect">
+            ${typingLessons.map((text, i) => `<option value="${i}">Lektion ${i + 1}</option>`).join('')}
+          </select>
+        </div>
+        <div class="typing-text" id="typingText">${typingLessons[0]}</div>
+        <textarea id="typingInput" class="typing-input" placeholder="Hier tippen..." rows="5"></textarea>
+        <div class="score" id="score">Punkte: 0%</div>
+        <div class="timer" id="timer">Zeit: 60s</div>
+      </div>
+    `;
+
+    const typingTextEl = document.getElementById('typingText');
+    const typingInput = document.getElementById('typingInput');
+    const scoreEl = document.getElementById('score');
+    const lessonSelect = document.getElementById('lessonSelect');
+    const timerEl = document.getElementById('timer');
+
+    let currentText = typingLessons[0];
+    let timeLeft = 60;
+    typingInput.value = '';
+    scoreEl.textContent = 'Punkte: 0%';
+    timerEl.textContent = `Zeit: ${timeLeft}s`;
+
+    // Timer starten
+    timerInterval = setInterval(() => {
+      timeLeft--;
+      timerEl.textContent = `Zeit: ${timeLeft}s`;
+      if (timeLeft <= 0) {
+        clearInterval(timerInterval);
+        typingInput.disabled = true;
+        alert('Zeit ist abgelaufen!');
+      }
+    }, 1000);
+
+    lessonSelect.addEventListener('change', () => {
+      clearInterval(timerInterval);
+      currentText = typingLessons[lessonSelect.value];
+      typingTextEl.textContent = currentText;
+      typingInput.value = '';
+      typingInput.disabled = false;
+      scoreEl.textContent = 'Punkte: 0%';
+      timeLeft = 60;
+      timerEl.textContent = `Zeit: ${timeLeft}s`;
+      timerInterval = setInterval(() => {
+        timeLeft--;
+        timerEl.textContent = `Zeit: ${timeLeft}s`;
+        if (timeLeft <= 0) {
+          clearInterval(timerInterval);
+          typingInput.disabled = true;
+          alert('Zeit ist abgelaufen!');
+        }
+      }, 1000);
+    });
+
+    typingInput.addEventListener('input', () => {
+      const userText = typingInput.value;
+      let correctLetters = 0;
+      let wrongLetters = 0;
+
+      for(let i = 0; i < userText.length; i++) {
+        if(i < currentText.length && userText[i] === currentText[i]) {
+          correctLetters++;
+        } else {
+          wrongLetters++;
+        }
+      }
+
+      // Punkte: +0.5% pro richtigem Buchstaben, -1% pro falschem Buchstaben
+      let score = (correctLetters * 0.5) - (wrongLetters * 1);
+      if(score < 0) score = 0;
+      if(score > 100) score = 100;
+
+      scoreEl.textContent = `Punkte: ${score.toFixed(1)}%`;
+    });
+  }
+</script>
+
+</body>
+</html>
